@@ -1,3 +1,8 @@
+use std::io::{stdout, Write};
+
+use crossterm::execute;
+use crossterm::terminal::{Clear, ClearType};
+
 use crate::point::Point;
 use crate::player::Player;
 
@@ -24,21 +29,22 @@ impl Matrix {
     }
 
     pub fn print(&self) {
-        for _ in 0..GRID_WIDTH + 2 {
-            print!("-");
-        }
-        print!("\n");
-        for (y, row) in self.data.iter().enumerate() {
-            print!("|");
-            for (x, _col) in row.iter().enumerate() {
-                print!("{}", &self.data[y][x]);
-            }
-            print!("|\n");
-        }
-        for _ in 0..GRID_WIDTH + 2 {
-            print!("-");
-        }
-        println!("");
-        // stdout().flush().unwrap(); // Flush stdout to ensure output is printed immediately
+      // Figure out how to clear screen and return cursor to top of grid
+      for _ in 0..GRID_WIDTH + 2 {
+          print!("-");
+      }
+      print!("\r\n");
+      for (y, row) in self.data.iter().enumerate() {
+          print!("|");
+          for (x, _col) in row.iter().enumerate() {
+              print!("{}", &self.data[y][x]);
+          }
+          print!("|\r\n");
+      }
+      for _ in 0..GRID_WIDTH + 2 {
+          print!("-");
+      }
+      print!("\r\n");
+      stdout().flush().unwrap(); // Flush stdout to ensure output is printed immediately
     }
 }
