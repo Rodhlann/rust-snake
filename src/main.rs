@@ -105,7 +105,7 @@ fn main() {
         grid.update(&player, &apple_pos);
         grid.print();
 
-        thread::sleep(Duration::from_millis(500));
+        thread::sleep(Duration::from_millis(300));
     }
 
     // Return terminal to original state
