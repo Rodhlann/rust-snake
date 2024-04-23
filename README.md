@@ -9,5 +9,5 @@ This time I'm doing it in Rust!!
 
 The game can be compiled and run using Rust tooling, and can be played with the WASD keys. 
 
-<img src="https://github.com/Rodhlann/rust-snake/assets/14314575/4c5efbc8-ffbd-47bb-a74d-39aa90b91940" width="400">
+<img src="https://github.com/Rodhlann/rust-snake/assets/14314575/15f87e4a-ccb1-49d2-b5b5-e9f86494120e" width="400">
 
