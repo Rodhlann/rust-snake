@@ -4,19 +4,23 @@ use crossterm::cursor::MoveToPreviousLine;
 use crossterm::execute;
 use crossterm::terminal::{Clear, ClearType};
 
-use crate::point::Point;
 use crate::player::Player;
+use crate::point::Point;
 
 pub const GRID_WIDTH: usize = 20;
 pub const GRID_HEIGHT: usize = GRID_WIDTH / 2;
 
-pub struct Matrix { pub data: [[char; GRID_WIDTH]; GRID_HEIGHT] }
+pub struct Matrix {
+    pub data: [[char; GRID_WIDTH]; GRID_HEIGHT],
+}
 
-const NAKE: [char;4] = ['N','A','K','E'];
+const NAKE: [char; 4] = ['N', 'A', 'K', 'E'];
 
 impl Matrix {
     pub fn new() -> Matrix {
-        Matrix { data: [[' '; GRID_WIDTH]; GRID_HEIGHT] }
+        Matrix {
+            data: [[' '; GRID_WIDTH]; GRID_HEIGHT],
+        }
     }
 
     pub fn update(&mut self, player: &Player, apple_pos: &Option<Point>) {
@@ -31,11 +35,9 @@ impl Matrix {
             if tail_len > 4 {
                 if i == 0 {
                     self.data[pos.y as usize][pos.x as usize] = NAKE[0];
-                }
-                else if i == tail_len - 2 {
+                } else if i == tail_len - 2 {
                     self.data[pos.y as usize][pos.x as usize] = NAKE[2];
-                }
-                else if i == tail_len - 1 {
+                } else if i == tail_len - 1 {
                     self.data[pos.y as usize][pos.x as usize] = NAKE[3];
                 } else {
                     self.data[pos.y as usize][pos.x as usize] = NAKE[1];
@@ -48,7 +50,12 @@ impl Matrix {
 
     pub fn print(&self) {
         // Clear screen and return to start of output
-        execute!(stdout(), Clear(ClearType::All), MoveToPreviousLine(GRID_HEIGHT as u16)).expect("Failed to clear content");
+        execute!(
+            stdout(),
+            Clear(ClearType::All),
+            MoveToPreviousLine(GRID_HEIGHT as u16)
+        )
+        .expect("Failed to clear content");
         for _ in 0..GRID_WIDTH + 2 {
             print!("-");
         }

@@ -1,14 +1,21 @@
-mod point;
 mod matrix;
 mod player;
+mod point;
 
-use crossterm::{event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers }, terminal};
-use point::Point;
+use crossterm::{
+    event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers},
+    terminal,
+};
 use matrix::{Matrix, GRID_HEIGHT, GRID_WIDTH};
 use player::{Player, DIRS};
+use point::Point;
 
-use std::{io::{stdout, Write}, thread, time::Duration};
 use rand::{thread_rng, Rng};
+use std::{
+    io::{stdout, Write},
+    thread,
+    time::Duration,
+};
 
 fn check_game_over(player: &Player) -> bool {
     let current_pos = &player.position;
@@ -16,13 +23,13 @@ fn check_game_over(player: &Player) -> bool {
     if current_pos.x >= GRID_WIDTH as i32
         || current_pos.x < 0
         || current_pos.y >= GRID_HEIGHT as i32
-        || current_pos.y < 0 
+        || current_pos.y < 0
     {
-        return true
+        return true;
     }
     // Player will intersect with their tail
     if player.tail.contains(current_pos) {
-        return true
+        return true;
     }
     false
 }
@@ -30,14 +37,19 @@ fn check_game_over(player: &Player) -> bool {
 fn check_for_user_input() -> Option<char> {
     if let Ok(true) = poll(Duration::from_millis(50)) {
         // Read the event
-        if let Ok(Event::Key(KeyEvent { code, modifiers, .. })) = read() {
+        if let Ok(Event::Key(KeyEvent {
+            code, modifiers, ..
+        })) = read()
+        {
             match code {
                 KeyCode::Char(c) => {
-                    if c == 'c' && modifiers == KeyModifiers::CONTROL { return Some(c) }
+                    if c == 'c' && modifiers == KeyModifiers::CONTROL {
+                        return Some(c);
+                    }
                     return Some(c);
                 }
-                _ => { 
-                    return None; 
+                _ => {
+                    return None;
                 }
             }
         }
@@ -53,54 +65,61 @@ fn main() {
         position: Point { x: 1, y: 1 },
         points: 0,
         new_point: false,
-        tail: Vec::new()
+        tail: Vec::new(),
     };
 
     // Enable terminal raw mode
     terminal::enable_raw_mode().expect("Failed to enable raw mode");
- 
-    loop {        
+
+    loop {
         match check_for_user_input() {
-            // Char c is only returned in the case of CTRL+C input, kill program 
+            // Char c is only returned in the case of CTRL+C input, kill program
             Some('c') => {
                 break;
             }
             Some(char) => {
                 match char {
-                    'w' => { dir = DIRS.0 },
-                    'd' => { dir = DIRS.1 },
-                    's' => { dir = DIRS.2 },
-                    'a' => { dir = DIRS.3 },
-                    _ => ()
+                    'w' => dir = DIRS.0,
+                    'd' => dir = DIRS.1,
+                    's' => dir = DIRS.2,
+                    'a' => dir = DIRS.3,
+                    _ => (),
                 };
-            },
-            None => ()
+            }
+            None => (),
         }
 
         player.update(&dir);
 
         if check_game_over(&player) {
             print!("Game Over!!");
-            break
+            break;
         }
 
         let current_pos = &player.position;
 
-        // TODO: Figure out how to break this out in to it's own function 
         // Check for apple intersection, iterate player points
-        if apple_pos.is_some() && apple_pos.as_ref().unwrap() == current_pos {
-            player.points += 1;
-            player.new_point = true;
-            apple_pos = None;
+        if let Some(pos) = &apple_pos {
+            if pos == current_pos {
+                player.points += 1;
+                player.new_point = true;
+                apple_pos = None;
+            }
         }
+
         if apple_pos.is_none() {
-            while apple_pos.is_none() || apple_pos.as_ref().unwrap() == current_pos {
+            // Set new apple_pos if apple_pos == None, or if the player's current
+            // position is the same as the new apple_pos
+            while apple_pos.is_none()
+                || apple_pos.as_ref().unwrap() == current_pos
+                || player.tail.contains(apple_pos.as_ref().unwrap())
+            {
                 apple_pos = Some(Point {
                     x: thread_rng().gen_range(0..matrix::GRID_WIDTH as i32),
-                    y: thread_rng().gen_range(0..matrix::GRID_HEIGHT as i32)
+                    y: thread_rng().gen_range(0..matrix::GRID_HEIGHT as i32),
                 })
             }
-        }     
+        }
 
         grid.update(&player, &apple_pos);
         grid.print();
