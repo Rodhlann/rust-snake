@@ -1,4 +1,4 @@
-use crate::point::Point;
+use grid_point::Point;
 
 pub const DIRS: (Point, Point, Point, Point) = (
     Point { x: 0, y: -1 }, // N
@@ -17,10 +17,7 @@ pub struct Player {
 impl Player {
     pub fn update(&mut self, dir: &Point) {
         let current_pos = &self.position;
-        let next_pos = Point {
-            x: current_pos.x + dir.x,
-            y: current_pos.y + dir.y,
-        };
+        let next_pos = Point::add(current_pos, dir);
 
         if self.points > 0 {
             if !self.tail.is_empty() && !self.new_point {

@@ -63,6 +63,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "grid-point"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0a3b2db6407684f6092b216cbe282f2ea7e099f8b76de51b2151a2ae8e6f137"
+
+[[package]]
 name = "libc"
 version = "0.2.153"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -169,6 +175,7 @@ name = "rust-snake"
 version = "0.1.0"
 dependencies = [
  "crossterm",
+ "grid-point",
  "rand",
 ]
 

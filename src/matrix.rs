@@ -5,7 +5,7 @@ use crossterm::execute;
 use crossterm::terminal::{Clear, ClearType};
 
 use crate::player::Player;
-use crate::point::Point;
+use grid_point::Point;
 
 pub const GRID_WIDTH: usize = 20;
 pub const GRID_HEIGHT: usize = GRID_WIDTH / 2;

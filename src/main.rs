@@ -1,6 +1,5 @@
 mod matrix;
 mod player;
-mod point;
 
 use crossterm::{
     event::{poll, read, Event, KeyCode, KeyEvent, KeyModifiers},
@@ -8,8 +7,8 @@ use crossterm::{
 };
 use matrix::{Matrix, GRID_HEIGHT, GRID_WIDTH};
 use player::{Player, DIRS};
-use point::Point;
 
+use grid_point::Point;
 use rand::{thread_rng, Rng};
 use std::{
     io::{stdout, Write},
