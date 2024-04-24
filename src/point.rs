@@ -13,7 +13,7 @@ impl PartialEq for Point {
 
 impl Clone for Point {
   fn clone(&self) -> Self {
-      Self { x: self.x.clone(), y: self.y.clone() }
+      Self { x: self.x, y: self.y }
   }
 }
 

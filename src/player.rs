@@ -20,10 +20,10 @@ impl Player {
     let next_pos = Point { x: current_pos.x + dir.x, y: current_pos.y + dir.y };
 
     if self.points > 0 {
-      if self.tail.len() > 0 && self.new_point == false {
+      if !self.tail.is_empty() && !self.new_point {
         self.tail.pop();
       }
-      if self.new_point == true {
+      if self.new_point {
         self.new_point = false
       }
       let mut new = vec!(Point { x: current_pos.x, y: current_pos.y });

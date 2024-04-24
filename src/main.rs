@@ -21,7 +21,7 @@ fn check_game_over(player: &Player) -> bool {
         return true
     }
     // Player will intersect with their tail
-    if player.tail.contains(&current_pos) {
+    if player.tail.contains(current_pos) {
         return true
     }
     false
@@ -88,7 +88,7 @@ fn main() {
 
         // TODO: Figure out how to break this out in to it's own function 
         // Check for apple intersection, iterate player points
-        if !apple_pos.is_none() && apple_pos.as_ref().unwrap() == current_pos {
+        if apple_pos.is_some() && apple_pos.as_ref().unwrap() == current_pos {
             player.points += 1;
             player.new_point = true;
             apple_pos = None;
